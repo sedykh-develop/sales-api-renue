@@ -1,3 +1,7 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+}
+
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${spring_boot_version}"
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
@@ -5,3 +9,17 @@ dependencies {
     compile project(":wsdl-client")
     compile project(":qr-decoder")
 }
+
+task copyArchives {
+    doLast {
+        rootProject.libsDir
+        def webPath = project(":web").libsDir
+        delete fileTree(rootProject.libsDir)
+        copy {
+            from "${webPath}"
+            into "${rootProject.libsDir}"
+        }
+    }
+}
+
+build.finalizedBy(copyArchives)
