@@ -1,0 +1,5 @@
+rootProject.name = 'RenueSales'
+include 'wsdl-client'
+include 'web'
+include 'qr-decoder'
+

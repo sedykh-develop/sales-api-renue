@@ -1,0 +1,9 @@
+project.ext {
+    apache_cxf_version = "3.3.4"
+}
+
+dependencies {
+    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: "${apache_cxf_version}"
+    compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: "${apache_cxf_version}"
+    compile group: 'org.springframework', name: 'spring-context', version: "${spring_version}"
+}
