@@ -5,3 +5,17 @@ dependencies {
     compile project(":wsdl-client")
     compile project(":qr-decoder")
 }
+
+task copyArchives {
+    doLast {
+        rootProject.libsDir
+        def webPath = project(":web").libsDir
+        delete fileTree(rootProject.libsDir)
+        copy {
+            from "${webPath}"
+            into "${rootProject.libsDir}"
+        }
+    }
+}
+
+build.finalizedBy(copyArchives)

@@ -1,6 +1,4 @@
-plugins {
-    id 'idea'
-}
+
 
 group 'ru.renue.fns'
 
@@ -26,3 +24,7 @@ allprojects {
         compileOnly 'org.projectlombok:lombok:1.18.10'
     }
 }
+
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
