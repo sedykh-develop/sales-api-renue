@@ -6,8 +6,10 @@ import com.google.zxing.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import ru.renue.fns.QrDecodeService;
 import ru.renue.fns.SalesDTO;
 import ru.renue.fns.service.FileDownloadService;
@@ -41,10 +43,9 @@ public class SalesController {
         return response.getResult().getTicket();
     }
 
-
-    @GetMapping("get/salesInfo")
-    public String getSales(@RequestParam("url") String fileUrl) throws FormatException, ChecksumException, NotFoundException, IOException, InterruptedException, AuthenticationException, MessageNotFoundException, JAXBException {
-        SalesDTO salesDTO = qrDecodeService.decode(fileDownloadService.downloadFile(fileUrl));
+    @PostMapping("send/salesImage")
+    public String sendSalesImage(@RequestParam("file") MultipartFile file) throws IOException, InterruptedException, AuthenticationException, MessageNotFoundException, JAXBException, FormatException, ChecksumException, NotFoundException {
+        SalesDTO salesDTO = qrDecodeService.decode(file.getInputStream());
         GetTicketResponse response = salesService.execute(salesDTO.getDate(), salesDTO.getSum(), salesDTO.getFd(), salesDTO.getFn(), salesDTO.getFs(), salesDTO.getOperationType());
         log.info("Receive response {}", response.getResult().getMessage());
         return response.getResult().getTicket();

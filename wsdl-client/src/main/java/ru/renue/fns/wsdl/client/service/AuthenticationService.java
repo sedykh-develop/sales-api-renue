@@ -99,7 +99,7 @@ public class AuthenticationService {
         // TODO: обработка ошибок, иначе не будет происходить авторизация
         updateToken(authResponse.getResult().getToken());
         //expireTokenDelays.put(new ExpireTokenDelay(authResponse.getResult().getExpireTime().toGregorianCalendar().getTime().getTime() - 1000)); TODO: решить ошибку со схемой
-        expireTokenDelays.put(new ExpireTokenDelay(System.currentTimeMillis() + 60_000 * 60));
+        expireTokenDelays.put(new ExpireTokenDelay(System.currentTimeMillis() + 60_000));
     }
 
     private AuthResponse executeAuth() throws JAXBException, AuthenticationException {

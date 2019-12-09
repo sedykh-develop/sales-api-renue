@@ -1,0 +1,13 @@
+changeSet:
+  id: init-db
+  author: sedykh-ds
+  objectQuotingStrategy: LEGACY
+  changes:
+    - sqlFile:
+        dbms: PostgreSQL
+        encoding: UTF-8
+        endDelimiter: \nGO
+        path: migration/init.sql
+        relativeToChangelogFile: true
+        splitStatements: true
+        stripComments: true
