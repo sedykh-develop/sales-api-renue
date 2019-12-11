@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class SalesDTO {
+public class DecodeQrDTO {
     private final String date;
     private final String fs;
     private final String fd;

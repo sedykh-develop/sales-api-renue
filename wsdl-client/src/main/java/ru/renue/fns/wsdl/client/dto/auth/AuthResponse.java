@@ -1,8 +1,11 @@
 
 package ru.renue.fns.wsdl.client.dto.auth;
 
-import javax.xml.bind.annotation.*;
-import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -21,7 +24,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
  *                   &lt;element name="Token" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                   &lt;element name="ExpireTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+ *                   &lt;element name="ExpireTime" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -51,11 +54,11 @@ public class AuthResponse {
 
     /**
      * Gets the value of the result property.
-     *
+     * 
      * @return
      *     possible object is
      *     {@link AuthResponse.Result }
-     *
+     *     
      */
     public AuthResponse.Result getResult() {
         return result;
@@ -63,11 +66,11 @@ public class AuthResponse {
 
     /**
      * Sets the value of the result property.
-     *
+     * 
      * @param value
      *     allowed object is
      *     {@link AuthResponse.Result }
-     *
+     *     
      */
     public void setResult(AuthResponse.Result value) {
         this.result = value;
@@ -109,7 +112,7 @@ public class AuthResponse {
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *       &lt;sequence>
      *         &lt;element name="Token" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *         &lt;element name="ExpireTime" type="{http://www.w3.org/2001/XMLSchema}dateTime"/>
+     *         &lt;element name="ExpireTime" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -128,8 +131,7 @@ public class AuthResponse {
         @XmlElement(name = "Token", namespace = "urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0", required = true)
         protected String token;
         @XmlElement(name = "ExpireTime", namespace = "urn://x-artefacts-gnivc-ru/ais3/kkt/AuthService/types/1.0", required = true)
-        @XmlSchemaType(name = "dateTime")
-        protected XMLGregorianCalendar expireTime;
+        protected String expireTime;
 
         /**
          * Gets the value of the token property.
@@ -160,10 +162,10 @@ public class AuthResponse {
          * 
          * @return
          *     possible object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public XMLGregorianCalendar getExpireTime() {
+        public String getExpireTime() {
             return expireTime;
         }
 
@@ -172,10 +174,10 @@ public class AuthResponse {
          * 
          * @param value
          *     allowed object is
-         *     {@link XMLGregorianCalendar }
+         *     {@link String }
          *     
          */
-        public void setExpireTime(XMLGregorianCalendar value) {
+        public void setExpireTime(String value) {
             this.expireTime = value;
         }
 

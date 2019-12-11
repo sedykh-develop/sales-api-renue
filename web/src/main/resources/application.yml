@@ -1,7 +1,20 @@
 spring:
   jpa:
+    database: POSTGRESQL
+    show-sql: true
     hibernate:
       ddl-auto: none
+      show_sql: true
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5433/checks
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
 token:
   master: p3drOlINIJFScV1hIZq2WejBaADVfgL2qXcpetUQ73jIpcMpdeOppHK9GoTMZWWD49LG1KJIgrobsFEwQpKZ3ewEY8JIRtBDpBEyLrtFWjEAo5i7JbRKTUwkse1FjXJW
   user: QVBQX1VTRVJfSURfMQ==
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE

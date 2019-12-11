@@ -1,13 +1,16 @@
 package ru.renue.fns.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "CHECK")
+@Entity(name = "CHECK_DATA")
+@Table
 @Data
-public class Check {
+public class Check implements Serializable {
 
     @EmbeddedId
     private CompositeId id;
@@ -18,12 +21,14 @@ public class Check {
     @Column(name = "state", nullable = false)
     private String state;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "telegram_user_id")
+    private Long telegramUserId;
 
     @Embeddable
     @Data
-    public static class CompositeId {
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CompositeId implements Serializable {
 
         @Column(name = "fn")
         private String fn;

@@ -27,6 +27,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.dom.DOMResult;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.DelayQueue;
@@ -38,6 +41,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class AuthenticationService {
 
+    public static final String FNS_OPEN_API_TOKEN = "FNS-OpenApi-Token";
+    public static final String FNS_OPEN_API_USER_TOKEN = "FNS-OpenApi-UserToken";
     @Value("${token.master}")
     private String masterToken;
 
@@ -98,8 +103,8 @@ public class AuthenticationService {
         AuthResponse authResponse = executeAuth();
         // TODO: обработка ошибок, иначе не будет происходить авторизация
         updateToken(authResponse.getResult().getToken());
-        //expireTokenDelays.put(new ExpireTokenDelay(authResponse.getResult().getExpireTime().toGregorianCalendar().getTime().getTime() - 1000)); TODO: решить ошибку со схемой
-        expireTokenDelays.put(new ExpireTokenDelay(System.currentTimeMillis() + 60_000));
+        expireTokenDelays.put(new ExpireTokenDelay(Timestamp.valueOf(LocalDateTime.from(
+                DateTimeFormatter.ISO_OFFSET_DATE_TIME.parse(authResponse.getResult().getExpireTime().replaceAll(" ", "")))).getTime() - 10_000));
     }
 
     private AuthResponse executeAuth() throws JAXBException, AuthenticationException {
@@ -125,12 +130,20 @@ public class AuthenticationService {
     }
 
     public void updateToken(final String token) {
-        client.getOutInterceptors().add(new MessageSenderInterceptor() {
+        if (!client.getOutInterceptors().isEmpty()) {
+            client.getOutInterceptors().set(client.getOutInterceptors().size() - 1, getMessageSenderInterceptor(token));
+        } else {
+            client.getOutInterceptors().add(getMessageSenderInterceptor(token));
+        }
+    }
+
+    private MessageSenderInterceptor getMessageSenderInterceptor(final String token) {
+        return new MessageSenderInterceptor() {
             @Override
-            public void handleMessage(Message message) throws Fault {
-                ((Map<String, Object>) message.get(Message.PROTOCOL_HEADERS)).put("FNS-OpenApi-UserToken", Arrays.asList(userToken));
-                ((Map<String, Object>) message.get(Message.PROTOCOL_HEADERS)).put("FNS-OpenApi-Token", Arrays.asList(token));
+            public void handleMessage(Message message) {
+                ((Map<String, Object>) message.get(Message.PROTOCOL_HEADERS)).put(FNS_OPEN_API_USER_TOKEN, Arrays.asList(userToken));
+                ((Map<String, Object>) message.get(Message.PROTOCOL_HEADERS)).put(FNS_OPEN_API_TOKEN, Arrays.asList(token));
             }
-        });
+        };
     }
 }

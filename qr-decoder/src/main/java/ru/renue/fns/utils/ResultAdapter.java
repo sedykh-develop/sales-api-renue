@@ -2,7 +2,7 @@ package ru.renue.fns.utils;
 
 import com.google.zxing.Result;
 import lombok.NonNull;
-import ru.renue.fns.SalesDTO;
+import ru.renue.fns.DecodeQrDTO;
 import ru.renue.fns.exception.QrReaderRuntimeException;
 
 import java.util.Objects;
@@ -14,46 +14,46 @@ public final class ResultAdapter {
     private ResultAdapter() {
     }
 
-    public static SalesDTO convert(@NonNull final Result result) {
+    public static DecodeQrDTO convert(@NonNull final Result result) {
         Objects.requireNonNull(result);
 
         if (result.getText().isEmpty()) {
             throw new QrReaderRuntimeException(String.format("Result is null %s", result));
         }
 
-        SalesDTO.SalesDTOBuilder salesDtoBuilder = SalesDTO.builder();
+        DecodeQrDTO.DecodeQrDTOBuilder decodeQrDtoBuilder = DecodeQrDTO.builder();
         for (String resultPair : result.getText().split(PAIR_DELIMITER)) {
             String[] keyValuePair = resultPair.split(KEY_VALUE_DELIMITER);
-            add(keyValuePair[0], keyValuePair[1], salesDtoBuilder);
+            add(keyValuePair[0], keyValuePair[1], decodeQrDtoBuilder);
         }
 
-        return salesDtoBuilder.build();
+        return decodeQrDtoBuilder.build();
     }
 
-    private static void add(String key, String value, SalesDTO.SalesDTOBuilder salesDtoBuilder) {
+    private static void add(String key, String value, DecodeQrDTO.DecodeQrDTOBuilder decodeQrDtoBuilder) {
         switch (key) {
             case FD : {
-                salesDtoBuilder.fd(value);
+                decodeQrDtoBuilder.fd(value);
                 break;
             }
             case FN : {
-                salesDtoBuilder.fn(value);
+                decodeQrDtoBuilder.fn(value);
                 break;
             }
             case FS : {
-                salesDtoBuilder.fs(value);
+                decodeQrDtoBuilder.fs(value);
                 break;
             }
             case SUM : {
-                salesDtoBuilder.sum(getNormalizeSum(value));
+                decodeQrDtoBuilder.sum(getNormalizeSum(value));
                 break;
             }
             case OPERATION_TYPE : {
-                salesDtoBuilder.operationType(value);
+                decodeQrDtoBuilder.operationType(value);
                 break;
             }
             case DATE : {
-                salesDtoBuilder.date(getNormalizeDate(value));
+                decodeQrDtoBuilder.date(getNormalizeDate(value));
                 break;
             }
         }
